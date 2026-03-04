@@ -3,7 +3,6 @@ from flask import Flask, request, jsonify, render_template, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
 
-#Cargar las variables de entorno
 load_dotenv()
 
 #crear instancia
@@ -11,13 +10,13 @@ app =  Flask(__name__)
 
 # Configuración de la base de datos PostgreSQL
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False 
 
 db = SQLAlchemy(app)
 
 #Modelo de la base de datos
 class Estudiante(db.Model):
-    _tablename_ = 'estudiantes'
+    __tablename__ = 'estudiantes'
     no_control = db.Column(db.String, primary_key=True)
     nombre = db.Column(db.String)
     ap_paterno = db.Column(db.String)
@@ -41,7 +40,6 @@ def index():
     estudiantes = Estudiante.query.all()
     #return estudiantes
     return render_template('index.html', estudiantes = estudiantes)
-
 
 #Ruta /alumnos crear un nuevo alumno
 @app.route('/estudiantes/new', methods=['GET','POST'])
@@ -87,5 +85,7 @@ def delete_estudiante(no_control):
     return redirect(url_for('index'))
 
 
-if __name__ == '_main_':
+
+
+if __name__ == '__main__':
     app.run(debug=True)
